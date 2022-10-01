@@ -17,6 +17,8 @@ export const ContactList = () => {
   const visibleContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter)
   );
+
+ 
   
   const deleteContact = contactId => {
     dispatch(deleteActionContact(contactId))
