@@ -2,7 +2,7 @@ import { ButtonForm, LabelStyle } from './ContactForm.styled';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/reducer';
+import { getContacts } from 'redux/selectors';
 import { nanoid } from 'nanoid';
 import { addActionContact } from 'redux/reducer';
 
