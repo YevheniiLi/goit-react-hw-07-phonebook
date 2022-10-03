@@ -2,16 +2,16 @@ import { Box } from 'components/styles/Box';
 import { ContactItem , ContactText} from './ContactList.styled';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { getFilter } from 'redux/selectors';
-import { getContacts } from 'redux/selectors';
+import { selectFilter } from 'redux/selectors';
+import { selectContacts } from 'redux/selectors';
 import { ButtonForm } from 'components/ContactForm/ContactForm.styled';
-import { deleteActionContact } from 'redux/reducer';
+import { deleteContacts } from 'redux/operations';
 import { useDispatch } from 'react-redux';
 
 export const ContactList = () => {
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
-  const filter = useSelector(getFilter).toLowerCase();
+  const filter = useSelector(selectFilter).toLowerCase();
 
 
   const visibleContacts = contacts.filter(contact =>
@@ -21,7 +21,7 @@ export const ContactList = () => {
  
   
   const deleteContact = contactId => {
-    dispatch(deleteActionContact(contactId))
+    dispatch(deleteContacts(contactId))
   };
 
   return (

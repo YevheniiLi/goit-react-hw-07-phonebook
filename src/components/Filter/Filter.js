@@ -1,10 +1,10 @@
 import { InputName, InputText } from './Filter.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilter } from 'redux/selectors';
-import { changeActionFilter } from 'redux/reducer';
+import { selectFilter } from 'redux/selectors';
+import { changeFilter } from 'redux/reducer';
 
 export const Filter = () => {
-  const filter = useSelector(getFilter);
+  const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   return (
@@ -15,7 +15,7 @@ export const Filter = () => {
           type="text"
           name="name"
           value={filter}
-          onChange={e => dispatch(changeActionFilter(e.target.value))}
+          onChange={e => dispatch(changeFilter(e.target.value))}
         />
       </InputName>
     </>

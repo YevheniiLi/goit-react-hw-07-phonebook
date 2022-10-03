@@ -2,9 +2,9 @@ import { ButtonForm, LabelStyle } from './ContactForm.styled';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
+import { selectContacts } from 'redux/selectors';
 import { nanoid } from 'nanoid';
-import { addActionContact } from 'redux/reducer';
+import { addContacts } from 'redux/operations';
 
 // Создание формы с библиотекой Formik
 
@@ -19,7 +19,7 @@ const initialValues = {
 };
 
 export const ContactForm = () => {
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const addNewContact = (values, actions) => {
@@ -37,7 +37,7 @@ export const ContactForm = () => {
     ) {
       alert(`${newContact.name} is already in contacts!`);
     } else {
-      dispatch(addActionContact(newContact));
+      dispatch(addContacts(newContact));
       actions.resetForm();
     }
   };

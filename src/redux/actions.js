@@ -1,31 +1,31 @@
-// Redux ToolKit
-
 // import { createAction } from "@reduxjs/toolkit";
 
-// export const addActionContact = createAction('contact/addActionContact');
-// export const deleteActionContact = createAction('contact/deleteActionContact');
-// export const changeActionFilter = createAction('filter/changeActionFilter');
+// //penging
+// export const fetchContactsRequest = createAction('contacts/fetchContactsRequest');
+
+// // fullfield
+// export const fetchContactsSuccess = createAction('contacts/fetchContactsSuccess');
+
+// //rejected
+// export const fetchContactsError = createAction('contacts/fetchContactsError');
 
 
-// Redux
 
-// export const addActionContact = newContact => {
-//   return {
-//     type: 'contact/addActionContact',
-//     payload: newContact,
-//     };
-// };
+// //penging
+// export const addContactsRequest = createAction('contacts/addContactsRequest');
 
-// export const deleteActionContact = contactId => {
-//     return {
-//         type: 'contact/deleteActionContact',
-//         payload: contactId,
-//     }
-// }
+// // fullfield
+// export const addContactsSuccess = createAction('contacts/addContactsSuccess');
 
-// export const changeActionFilter = value => {
-//     return {
-//         type: 'filter/changeActionFilter',
-//         payload: value,
-//     }
-// }
+// //rejected
+// export const addContactsError = createAction('contacts/addContactsError');
+
+
+// //penging
+// export const deleteContactsRequest = createAction('contacts/deleteContactsRequest');
+
+// // fullfield
+// export const deleteContactsSuccess = createAction('contacts/deleteContactsSuccess');
+
+// //rejected
+// export const deleteContactsError = createAction('contacts/deleteContactsError');

@@ -1,86 +1,130 @@
-// Redux ToolKit + createSlice
+// Redux ToolKit + createSlice + createAsyncThunk + builder
 
-import { createSlice } from '@reduxjs/toolkit';
-import storage from 'redux-persist/lib/storage';
-import { persistReducer } from 'redux-persist';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { fetchContacts, addContacts, deleteContacts } from './operations';
+
+const handleFetch = (state, action) => {
+  state.items = action.payload;
+};
+
+const handleAdd = (state, action) => {
+  state.items.push(action.payload);
+};
+
+const handleDelete = (state, action) => {
+  const index = state.items.findIndex(item => item.id === action.payload.id);
+  state.items.splice(index, 1);
+};
+
+const actions = [fetchContacts, addContacts, deleteContacts];
 
 export const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
     items: [],
+    isLoading: false,
+    error: null,
     filter: '',
   },
   reducers: {
-    addActionContact: (state, action) => {
-      return { ...state, items: [...state.items, action.payload] };
-    },
-    deleteActionContact: (state, action) => {
-      return {
-        ...state,
-        items: state.items.filter(contact => contact.id !== action.payload),
-      };
-    },
-    changeActionFilter: (state, action) => {
-      return { ...state, filter: action.payload };
+    changeFilter(state, action) {
+      state.filter = action.payload;
     },
   },
+
+  extraReducers: builder =>
+    builder
+      .addCase(fetchContacts.fulfilled, handleFetch)
+      .addCase(addContacts.fulfilled, handleAdd)
+      .addCase(deleteContacts.fulfilled, handleDelete)
+      .addMatcher(
+        isAnyOf(...actions.map(action => action.fulfilled)),
+        state => {
+          state.isLoading = false;
+          state.error = null;
+        }
+      )
+      .addMatcher(isAnyOf(...actions.map(action => action.pending)), state => {
+        state.isLoading = true;
+      })
+      .addMatcher(
+        isAnyOf(...actions.map(action => action.rejected)),
+        (state, action) => {
+          state.isLoading = false;
+          state.error = action.payload;
+        }
+      ),
 });
 
-export const { addActionContact, deleteActionContact, changeActionFilter } =
-  contactsSlice.actions;
-
-const persistConfig = {
-  key: 'contacts',
-  storage,
-  whiteList: ['contacts'],
-};
+export const { changeFilter } = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;
 
-// Selectors
+// Redux ToolKit + createSlice + createAsyncThunk
 
-export const persistedClickReducer = persistReducer(
-  persistConfig,
-  contactsReducer
-);
+// import { createSlice } from '@reduxjs/toolkit';
+// import { fetchContacts, addContacts, deleteContacts } from './operations';
 
-// // Redux ToolKit + createReducer
-
-// import { addActionContact, deleteActionContact,changeActionFilter } from "./actions";
-// import { createReducer } from "@reduxjs/toolkit";
-
-// const inititalState = {
-//     contacts: {
-//         items: [],
-//         filter: '',
-//   },
+// const request = (state) => {
+//   state.isLoading = true;
 // };
 
-// export const rootReducer = createReducer(inititalState, {
-//     [addActionContact] (state, action) {
-//          state.contacts.items.splice(0,0,  action.payload);
+// const success =(state) => {
+//   state.isLoading = false;
+//   state.error = null;
+// }
+
+// const error = (state, action) => {
+//   state.isLoading = false;
+//   state.error = action.payload;
+// }
+
+// export const contactsSlice = createSlice({
+//   name: 'contacts',
+//   initialState: {
+//     items: [],
+//     isLoading: false,
+//     error: null,
+//     filter: '',
+//   },
+//   reducers: {
+//     changeFilter(state, action) {
+//        state.filter = action.payload ;
 //     },
-//     [deleteActionContact] (state, action) {
-//         state.contacts.items = state.contacts.items.filter(contact => contact.id !== action.payload)
+//   },
+//   extraReducers: {
+//     [fetchContacts.pending](state) {
+//       request(state);
 //     },
-//     [changeActionFilter] (state, action) {
-//         state.contacts.filter = action.payload;
+//     [fetchContacts.fulfilled](state, action) {
+//       state.items = action.payload;
+//       success(state, action);
 //     },
+//     [fetchContacts.rejected](state, action) {
+//       error(state, action);
+//     },
+//     [addContacts.pending](state) {
+//       request(state);
+//     },
+//     [addContacts.fulfilled](state,action) {
+//       state.items.push(action.payload);
+//       success(state,action)
+//     },
+//     [addContacts.rejected](state, action) {
+//       error(state, action)
+//     },
+//     [deleteContacts.pending](state) {
+//       request(state);
+//     },
+//     [deleteContacts.fulfilled] (state, action) {
+//       const index = state.itmes.findIndex(items => items.id === action.payload);
+//       state.items.splice(index,1);
+//       success(state,action);
+//     },
+//     [deleteContacts.rejected] (state, action){
+//       error ( state, action)
+//     }
+//   }
 // });
 
-// Redux
-
-// export const rootReducer = (state = inititalState, action) => {
-//   switch (action.type) {
-//     case 'contacts/addActionContact':
-//       return [...state.contacts.items, action.payload];
-//     case 'contacts/deleteActionContact':
-//       return state.contacts.items.filter(contact => contact.id !== action.payload);
-//     case 'filter/changeActionFilter':
-//       return {
-//         ...state,
-//         filter: action.payload,
-//       };
-//     default:
-//       return state;
-//   }
-// };
+// export const { changeFilter } = contactsSlice.actions;
+// export const contactsReducer = contactsSlice.reducer;
