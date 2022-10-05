@@ -21,8 +21,10 @@ const initialValues = {
 export const ContactForm = () => {
   const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
+  
 
   const addNewContact = (values, actions) => {
+    
     const newContact = {
       id: nanoid(),
       name: values.name,
